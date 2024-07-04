@@ -20,3 +20,10 @@ plt.title('K-Means Clustering')
 plt.xlabel('Feature 1')
 plt.ylabel('Feature 2')
 plt.show()
+
+# add logic to find distance from cluster center and use that metric to find anomalies
+# Step 5: Identify anomalies based on cluster distance
+cluster_centers = kmeans.cluster_centers_
+distances = np.array([np.linalg.norm(features[i] - cluster_centers[labels[i]]) for i in range(len(features))])
+anomaly_indices = np.argsort(distances)[-5:]  # Get the top 5 anomalies
+print("Anomaly indices:", anomaly_indices)
