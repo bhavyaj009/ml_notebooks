@@ -60,3 +60,22 @@ plt.ylabel('True Positive Rate')
 plt.title('Receiver Operating Characteristic (ROC)')
 plt.legend(loc="lower right")
 plt.show()
+
+# represent distance from cluster center points in histogram plot for each cluster y axis as distance and x axis as cluster number and anomaly points as red lines on bar chart
+# Step 7: Visualize cluster distances and anomalies
+plt.figure(figsize=(10, 6))
+for i in range(n_clusters):
+    cluster_distances = distances[labels == i]
+    plt.bar(i, np.mean(cluster_distances), yerr=np.std(cluster_distances), label=f'Cluster {i}')
+for anomaly_index in anomaly_indices:
+    plt.axhline(y=distances[anomaly_index], color='r', linestyle='--', label='Anomaly')
+plt.xlabel('Cluster Number')
+plt.ylabel('Distance from Cluster Center')
+plt.title('Cluster Distances and Anomalies')
+plt.legend()
+plt.show()
+# Step 8: Further analysis and interpretation
+# You can further analyze the anomalies based on domain knowledge or additional features to understand the reasons for anomalies.
+# For example, you can examine the data points corresponding to anomalies and investigate the characteristics that make them different from normal data points.
+# You can also explore different clustering algorithms, anomaly detection techniques, or visualization methods to gain deeper insights into the data.
+# These steps can help in refining the anomaly detection process and improving the overall performance of the model.
