@@ -61,13 +61,23 @@ plt.title('Receiver Operating Characteristic (ROC)')
 plt.legend(loc="lower right")
 plt.show()
 
-# represent distance based defect rank from cluster center points in histogram plot for each cluster y axis as distance based rank and x axis as cluster number and anomaly points as red in rank on histogram plot
+# represent distance based defect rank on y and cluster on x axis and anomalies as red lines on chart corresponding to each cluster
 # Step 7: Visualize anomaly ranking within clusters
-plt.figure(figsize=(8, 6))
+plt.figure(figsize=(10, 6))
 for i in range(n_clusters):
-    plt.hist(distances[labels == i], bins=20, alpha=0.6, label=f'Cluster {i}')
-plt.scatter(anomaly_indices, distances[anomaly_indices], color='red', label='Anomalies')
-plt.xlabel('Cluster Distance Rank')
+    cluster_indices = np.where(labels == i)[0]
+    cluster_distances = distances[cluster_indices]
+    sorted_indices = np.argsort(cluster_distances)
+    cluster_ranking = np.arange(len(cluster_indices))
+
+    plt.plot(cluster_ranking, cluster_distances[sorted_indices], label=f'Cluster {i}')
+
+    for anomaly_idx in anomaly_indices:
+        if anomaly_idx in cluster_indices:
+            anomaly_rank = np.where(cluster_indices == anomaly_idx)[0][0]
+            plt.axvline(anomaly_rank, color='r', linestyle='--')
+
+plt.xlabel('Rank within Cluster')
 plt.ylabel('Distance from Cluster Center')
 plt.title('Anomaly Ranking within Clusters')
 plt.legend()
